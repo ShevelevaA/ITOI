@@ -1,0 +1,21 @@
+#ifndef IMAGE_H
+#define IMAGE_H
+
+#include
+
+class Image
+{
+public:
+    QImage originalImg;
+public:
+    Image();
+    QPixmap createGrayImg();
+    QPixmap 
+private:
+    void setOriginalImg();
+    QVector<double> createGrayMatix();
+    QVector<double> createGradientMatrix();
+    QVector<double> ratingMatrix(QVector<double> matrix);
+};
+
+#endif // IMAGE_H
