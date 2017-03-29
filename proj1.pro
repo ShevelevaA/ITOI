@@ -25,9 +25,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    imageMatrix.cpp
+    imageMatrix.cpp \
+    editmatrix.cpp
 
 HEADERS  += mainwindow.h \
-    imageMatrix.h
+    imageMatrix.h \
+    editmatrix.h
 
 FORMS    += mainwindow.ui

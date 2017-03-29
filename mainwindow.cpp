@@ -7,6 +7,7 @@
 #include <QMainWindow>
 #include <math.h>
 #include "imageMatrix.cpp"
+#include "editmatrix.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -20,35 +21,64 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::showImg(QPixmap image){
+QPixmap MainWindow::loadImage()
+{
+    QString imgName = QFileDialog::getOpenFileName(0, "Open dialog", "", "*.jpg *.png");
+    if (!imgName.isEmpty())
+    {
+        QPixmap qPixmap;
+        if(!qPixmap.load(imgName)){
+            return NULL;
+        }
+        imageMatrix = new ImageMatrix(qPixmap);
+        return qPixmap;
+    }
+    return NULL;
+}
+
+void MainWindow::showImage(QPixmap image){
     QGraphicsScene *scene = new QGraphicsScene;
     scene->addPixmap(image);
-    ui->graphicsView->setScene(scene);
-    ui->graphicsView->show();
+    ui->graphicsView_2->setScene(scene);
+    ui->graphicsView_2->show();
+}
+
+QPixmap MainWindow::getSobel(){
+   editMatrix * edit = new editMatrix();
+   ImageMatrix * matrixSobel = edit->sobel(imageMatrix);
+   matrixSobel->ratingMatrix();
+   return matrixSobel->createImgFromMatrix();
+}
+
+QPixmap MainWindow::getGaus(){
+   editMatrix * edit = new editMatrix();
+   ImageMatrix * matrixGaus = edit->gaus(imageMatrix);
+   matrixGaus->ratingMatrix();
+   return matrixGaus->createImgFromMatrix();
 }
 
 void MainWindow::on_pushButton_clicked()
 {
-    imageMatrix22.loadImage();
-    QGraphicsScene *scene = new QGraphicsScene;
-    scene->addPixmap(imageMatrix22.originalImage);
-    ui->graphicsView->setScene(scene);
-    ui->graphicsView->show();
-
+    QPixmap qPixmap = loadImage();
+    if( !qPixmap.isNull() ){
+        QGraphicsScene *scene = new QGraphicsScene;
+        scene->addPixmap(qPixmap);
+        ui->graphicsView->setScene(scene);
+        ui->graphicsView->show();
+    }
+    else
+        ui->label_2->setText("Loading error!");
 }
 
 void MainWindow::on_pushButton_Sobel_clicked()
 {
-    QGraphicsScene *scene = new QGraphicsScene;
-    scene->addPixmap(imageMatrix22.getSobelImg());
-    ui->graphicsView_2->setScene(scene);
-    ui->graphicsView_2->show();
+    showImage(getSobel());
 }
 
 void MainWindow::on_pushButton_Save_clicked()
 {
     QPixmap pixmapImg = QPixmap::fromImage(resultImage);
-    QFile file("img.jpg");
+    QFile file("img111.jpg");
     file.open(QIODevice::WriteOnly);
     pixmapImg.save(&file, "JPG");
 
@@ -56,21 +86,14 @@ void MainWindow::on_pushButton_Save_clicked()
 
 void MainWindow::on_pushButton_SobelX_clicked()
 {
-
 }
 
 void MainWindow::on_pushButton_GrayImg_clicked()
 {
-    QGraphicsScene *scene = new QGraphicsScene;
-    scene->addPixmap(imageMatrix22.getGrayImg());
-    ui->graphicsView_2->setScene(scene);
-    ui->graphicsView_2->show();
+    showImage(imageMatrix->createImgFromMatrix());
 }
 
 void MainWindow::on_pushButton_Gaus_clicked()
 {
-    QGraphicsScene *scene = new QGraphicsScene;
-    scene->addPixmap(imageMatrix22.getGausImg());
-    ui->graphicsView_2->setScene(scene);
-    ui->graphicsView_2->show();
+    showImage(getGaus());
 }

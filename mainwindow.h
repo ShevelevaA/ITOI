@@ -13,15 +13,15 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 public:
-    QImage *qImage;
+    ImageMatrix * imageMatrix;
     QImage resultImage;
-  //  ImageMatrix imageMatrix;
-    QString selectImg();
-
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    void showImg(QPixmap image);
+    QPixmap loadImage();
+    QPixmap getSobel();
+    QPixmap getGaus();
+    void showImage(QPixmap image);
 
 private slots:
     void on_pushButton_clicked();
