@@ -12,6 +12,7 @@ private:
     unique_ptr<double []> matrix;
     int width;
     int height;
+    int edgeProcessing;
 public:
     ImageMatrix();
     ImageMatrix(const QPixmap &picture);
@@ -26,6 +27,10 @@ private:
    void createMatrixFromPicture();
    unique_ptr<double []> convolution(const double * matrixOrig, int width, int height, const double * matrix, int dimensionX, int dimensionY);
    double getMatrixElem(const double * matrix, int width, int height, int coordX, int coordY);
+   double edgeValue(const double * matrix, int width, int height, int coordX, int coordY);
+   double reflectionEdge(const double * matrix, int width, int height, int coordX, int coordY);
+   double turnImage(const double * matrix, int width, int height, int coordX, int coordY);
+
 };
 
 #endif // IMAGE_H

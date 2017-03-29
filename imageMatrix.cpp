@@ -8,6 +8,7 @@ ImageMatrix::ImageMatrix(const QPixmap &picture)
 {
     this->width = picture.width();
     this->height = picture.height();
+    this->edgeProcessing = 1;
 
     this->matrix = make_unique<double []>(this->width * this->height);
 
@@ -25,7 +26,7 @@ ImageMatrix::ImageMatrix(const double * matrix, int width, int height)
 {
     this->width = width;
     this->height = height;
-
+    this->edgeProcessing = 0;
     this->matrix = make_unique<double []>(this->width * this->height);
     for(int i = 0; i < this->width * this->height; i++){
         this->matrix[i] = matrix[i];
@@ -65,15 +66,54 @@ double ImageMatrix::getMatrixElem(const double * matrix, int width, int height, 
     if(coordX > -1 && coordX < width && coordY > -1 && coordY < height){
         return matrix[coordX + coordY * width];
     }
-    return 0;
+    switch(edgeProcessing){
+    case 0: return 0;
+    case 1: return edgeValue(matrix, width, height, coordX, coordY);
+    case 2: return reflectionEdge(matrix, width, height, coordX, coordY);
+    default: return turnImage(matrix, width, height, coordX, coordY);
+    }
+}
+
+double ImageMatrix::edgeValue(const double * matrix, int width, int height, int coordX, int coordY){
+    if(coordX < 0)
+        coordX = 0;
+    if(coordX >= width)
+        coordX = width - 1;
+    if(coordY < 0)
+        coordY = 0;
+    if(coordY >= height)
+        coordY = height - 1;
+    return matrix[coordX + coordY * width];
+}
+
+double ImageMatrix::reflectionEdge(const double * matrix, int width, int height, int coordX, int coordY){
+    if(coordX < 0)
+        coordX = abs(coordX);
+    if(coordX >= width)
+        coordX = width - (coordX - width) - 1;
+    if(coordY < 0)
+        coordY = abs(coordY);
+    if(coordY >= height)
+        coordY = height - (coordY - height) - 1;
+    return matrix[coordX + coordY * width];
+}
+
+double ImageMatrix::turnImage(const double * matrix, int width, int height, int coordX, int coordY){
+    if(coordX < 0)
+        coordX = width + coordX;
+    if(coordX >= width)
+        coordX = 1 + (coordX - width);
+    if(coordY < 0)
+        coordY = height + coordY;
+    if(coordY >= height)
+        coordY = 1 + (coordY - height);
+    return matrix[coordX + coordY * width];
 }
 
 unique_ptr<double []> ImageMatrix::convolution(const double * matrixOrig, int width, int height, const double * matrix, int dimensionX, int dimensionY)
 {
     double sum=0;
-
     auto resultMatrix = make_unique<double []>(width * height);
-
     for(int j = 0; j< height; j++)
     {
         for(int i = 0; i< width; i++)
