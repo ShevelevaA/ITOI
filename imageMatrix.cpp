@@ -56,10 +56,30 @@ int ImageMatrix::getHeight(){
     return this->height;
 }
 
+ImageMatrix* ImageMatrix::convolutionAxistImage(const double * matrFirst, const double * matrSecond, int dimensionMatrixConv){
+    return new ImageMatrix((convolutionAxist(matrFirst, matrSecond, dimensionMatrixConv)).get(), this->width, this->height);
+}
+
 unique_ptr<double []> ImageMatrix::convolutionAxist(const double * matrFirst, const double * matrSecond, int dimensionMatrixConv){
     auto matrix1 = convolution(this->matrix.get(), this->width, this->height, matrFirst, 1, dimensionMatrixConv);
     auto matrix2 = convolution(matrix1.get(), this->width, this->height, matrSecond, dimensionMatrixConv, 1);
     return matrix2;
+}
+
+ImageMatrix* ImageMatrix::convolutionAxistXYImage(const double * matrFirst, const double * matrSecond, int dimensionMatrixConv){
+    auto resultMatrix = make_unique<double []>(width * height);
+    auto matrixX = make_unique<double []>(width * height);
+    auto matrixY = make_unique<double []>(width * height);
+    matrixX = convolutionAxist(matrFirst, matrSecond, dimensionMatrixConv);
+    matrixY = convolutionAxist(matrSecond, matrFirst, dimensionMatrixConv);
+    for(int j = 0; j< height; j++)
+        {
+            for(int i = 0; i< width; i++)
+            {
+                resultMatrix[i + j * width]= sqrt(pow(matrixX[i + j * width],2) + pow(matrixY[i + j * width],2));
+            }
+        }
+    return new ImageMatrix(resultMatrix.get(), width, height);
 }
 
 double ImageMatrix::getMatrixElem(const double * matrix, int width, int height, int coordX, int coordY){

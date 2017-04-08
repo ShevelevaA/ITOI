@@ -4,14 +4,10 @@
 #include "imageMatrix.h"
 #include <memory>
 
-class editMatrix
+class editmatrix
 {
-private:
-    unique_ptr<double []> gausMatrixX;
-    unique_ptr<double []> gausMatrixY;
-    int dimensionMatrixConv;
 public:
-    editMatrix();
+    editmatrix();
     ImageMatrix * sobel(ImageMatrix * imageMatrix);
     ImageMatrix * gaus(ImageMatrix * imageMatrix);
 private:

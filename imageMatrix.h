@@ -20,12 +20,14 @@ public:
     ImageMatrix& operator=(ImageMatrix& imgMatrix) = default;
     QPixmap createImgFromMatrix();
     void ratingMatrix();
-    unique_ptr<double []> convolutionAxist(const double * matrFirst, const double * matrSecond, int dimensionMatrixConv);
+    ImageMatrix* ImageMatrix::convolutionAxistImage(const double * matrFirst, const double * matrSecond, int dimensionMatrixConv);
+    ImageMatrix* convolutionAxistXYImage(const double * matrFirst, const double * matrSecond, int dimensionMatrixConv);
     int getWidth();
     int getHeight();
 private:
    void createMatrixFromPicture();
    unique_ptr<double []> convolution(const double * matrixOrig, int width, int height, const double * matrix, int dimensionX, int dimensionY);
+   unique_ptr<double []> convolutionAxist(const double * matrFirst, const double * matrSecond, int dimensionMatrixConv);
    double getMatrixElem(const double * matrix, int width, int height, int coordX, int coordY);
    double edgeValue(const double * matrix, int width, int height, int coordX, int coordY);
    double reflectionEdge(const double * matrix, int width, int height, int coordX, int coordY);

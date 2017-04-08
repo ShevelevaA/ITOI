@@ -30,6 +30,6 @@ SOURCES += main.cpp\
 
 HEADERS  += mainwindow.h \
     imageMatrix.h \
-    editmatrix.h
+    convmatrix.h
 
 FORMS    += mainwindow.ui

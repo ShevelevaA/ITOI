@@ -7,7 +7,7 @@
 #include <QMainWindow>
 #include <math.h>
 #include "imageMatrix.cpp"
-#include "editmatrix.h"
+#include "convmatrix.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -44,14 +44,14 @@ void MainWindow::showImage(QPixmap image){
 }
 
 QPixmap MainWindow::getSobel(){
-   editMatrix * edit = new editMatrix();
+   editmatrix * edit = new editmatrix();
    ImageMatrix * matrixSobel = edit->sobel(imageMatrix);
    matrixSobel->ratingMatrix();
    return matrixSobel->createImgFromMatrix();
 }
 
 QPixmap MainWindow::getGaus(){
-   editMatrix * edit = new editMatrix();
+   editmatrix * edit = new editmatrix();
    ImageMatrix * matrixGaus = edit->gaus(imageMatrix);
    matrixGaus->ratingMatrix();
    return matrixGaus->createImgFromMatrix();
