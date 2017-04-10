@@ -8,6 +8,8 @@
 #include <math.h>
 #include "imageMatrix.cpp"
 #include "convmatrix.h"
+//#include "pyramid.h"
+#include "pyramid.cpp"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -44,15 +46,15 @@ void MainWindow::showImage(QPixmap image){
 }
 
 QPixmap MainWindow::getSobel(){
-   editmatrix * edit = new editmatrix();
+   Convolution * edit = new Convolution();
    ImageMatrix * matrixSobel = edit->sobel(imageMatrix);
    matrixSobel->ratingMatrix();
    return matrixSobel->createImgFromMatrix();
 }
 
 QPixmap MainWindow::getGaus(){
-   editmatrix * edit = new editmatrix();
-   ImageMatrix * matrixGaus = edit->gaus(imageMatrix);
+   Convolution * edit = new Convolution();
+   ImageMatrix * matrixGaus = edit->gaus(imageMatrix,4);
    matrixGaus->ratingMatrix();
    return matrixGaus->createImgFromMatrix();
 }
@@ -96,4 +98,12 @@ void MainWindow::on_pushButton_GrayImg_clicked()
 void MainWindow::on_pushButton_Gaus_clicked()
 {
     showImage(getGaus());
+}
+
+void MainWindow::on_pushButton_Pyramid_clicked()
+{
+    Pyramid * pyramid = new Pyramid();
+    ImageMatrix * pyrMatrix = pyramid->getPyramidImage(imageMatrix);
+    //pyrMatrix->ratingMatrix();
+    showImage(pyrMatrix->createImgFromMatrix());
 }

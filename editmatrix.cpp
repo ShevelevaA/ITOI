@@ -4,18 +4,18 @@
 #include <math.h>
 #include <iostream>
 
-editmatrix::editmatrix()
+Convolution::Convolution()
 {
 }
 
-ImageMatrix * editmatrix::sobel(ImageMatrix * imageMatrix){
+ImageMatrix * Convolution::sobel(ImageMatrix * imageMatrix){
     int dimensionMatrixConv = 3;
     double matrixX[3] = {1,2,1};
     double matrixY[3] = {1,0,-1};
     return imageMatrix->convolutionAxistXYImage(matrixY, matrixX, dimensionMatrixConv);
 }
 
-unique_ptr<double []> editmatrix::getBlurRadius(double sigma, int dimention){
+unique_ptr<double []> Convolution::getBlurRadius(double sigma, int dimention){
     int coord;
     double  multiplier = 1.0/(sqrt(2 * M_PI) * sigma);
     double expon;
@@ -30,13 +30,13 @@ unique_ptr<double []> editmatrix::getBlurRadius(double sigma, int dimention){
     return array;
 }
 
-int editmatrix::getDimentionRadius(double sigma){
+int Convolution::getDimentionRadius(double sigma){
     int first = (int)(sigma * 3);
     return first * 2;
 }
 
-ImageMatrix * editmatrix::gaus(ImageMatrix * imageMatrix){
-    double sigma = 4;
+ImageMatrix * Convolution::gaus(ImageMatrix * imageMatrix, double sigma){
+   // double sigma = 4;
     int dimentionRadius = getDimentionRadius(sigma);
     auto blurMatrix = getBlurRadius(sigma, dimentionRadius);
     return imageMatrix->convolutionAxistImage(blurMatrix.get(), blurMatrix.get(), dimentionRadius);

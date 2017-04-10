@@ -36,6 +36,8 @@ private slots:
 
     void on_pushButton_Gaus_clicked();
 
+    void on_pushButton_Pyramid_clicked();
+
 private:
     Ui::MainWindow *ui;
     ImageMatrix imageMatrix22;

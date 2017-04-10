@@ -94,6 +94,18 @@ double ImageMatrix::getMatrixElem(const double * matrix, int width, int height, 
     }
 }
 
+double ImageMatrix::getThisMatrixElem(int coordX, int coordY){
+    if(coordX > -1 && coordX < width && coordY > -1 && coordY < height){
+        return matrix[coordX + coordY * width];
+    }
+    switch(edgeProcessing){
+    case 0: return 0;
+    case 1: return edgeValue(matrix.get(), width, height, coordX, coordY);
+    case 2: return reflectionEdge(matrix.get(), width, height, coordX, coordY);
+    default: return turnImage(matrix.get(), width, height, coordX, coordY);
+    }
+}
+
 double ImageMatrix::edgeValue(const double * matrix, int width, int height, int coordX, int coordY){
     if(coordX < 0)
         coordX = 0;
@@ -150,6 +162,26 @@ unique_ptr<double []> ImageMatrix::convolution(const double * matrixOrig, int wi
     return resultMatrix;
 }
 
+ImageMatrix* ImageMatrix::reduceImage(){
+    int newWidth = width/2;
+    int newHeight = height/2;
+    auto newMatrix = make_unique<double []>(newWidth * newHeight);
+
+    for(int j = 0; j< newHeight; j++)
+    {
+        for(int i = 0; i< newWidth; i++)
+        {
+            newMatrix[i + j * newWidth] = getAverage(i,j);
+        }
+    }
+    return new ImageMatrix(newMatrix.get(), newWidth, newHeight);
+}
+
+double ImageMatrix::getAverage(int x, int y){
+    x *= 2;
+    y *= 2;
+    return (getThisMatrixElem(x, y) + getThisMatrixElem(x, y + 1) + getThisMatrixElem(x + 1, y) + getThisMatrixElem(x + 1, y + 1))/4;
+}
 
 void  ImageMatrix::ratingMatrix(){
     double max = *std::max_element(&matrix[0], &matrix[width*height - 1]);

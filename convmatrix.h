@@ -4,12 +4,12 @@
 #include "imageMatrix.h"
 #include <memory>
 
-class editmatrix
+class Convolution
 {
 public:
-    editmatrix();
+    Convolution();
     ImageMatrix * sobel(ImageMatrix * imageMatrix);
-    ImageMatrix * gaus(ImageMatrix * imageMatrix);
+    ImageMatrix * gaus(ImageMatrix * imageMatrix, double sigma);
 private:
     unique_ptr<double []> sobelOperator(const double * matrixX, const double * matrixY, int width, int height);
     unique_ptr<double []> getBlurRadius(double sigma, int dimention);
