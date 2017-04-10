@@ -8,10 +8,14 @@ Pyramid::Pyramid()
     octavesCount = 0;
 }
 
-ImageMatrix * Pyramid::getPyramidImage(ImageMatrix * imageMatrix){
-   changeImageSize(imageMatrix);
-   vector<Layer> octave = octavesVector[1];
-   return octave[0].imageMatrix;
+ImageMatrix * Pyramid::getPyramidImage(ImageMatrix * imageMatrix, int octaveNumber){
+    changeImageSize(imageMatrix);
+    if(octaveNumber >= octavesCount)
+        octaveNumber = octavesCount - 1;
+    if(octaveNumber < 0)
+        octaveNumber = 0;
+    vector<Layer> octave = octavesVector[octaveNumber];
+    return octave[0].imageMatrix;
 }
 
 vector<vector<Layer>> Pyramid::changeImageSize(ImageMatrix * imageMatrix){
@@ -42,7 +46,7 @@ vector<vector<Layer>> Pyramid::changeImageSize(ImageMatrix * imageMatrix){
             layer.imageMatrix = convolution->gaus(newImageMatrix, accountDeltaSigma(sigmaPrev, sigmaForw));
             layer.sigma = sigmaForw;
             layerVector.push_back(layer);
-         }
+        }
         octavesVector.push_back(layerVector);
     }
     return octavesVector;
@@ -53,7 +57,7 @@ int Pyramid::accountOctaves(int width, int height){
     if(width < height)
         minSide = width;
     else
-      minSide = height;
+        minSide = height;
 
     return minSide/150;
 }

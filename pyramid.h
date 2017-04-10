@@ -20,7 +20,7 @@ private:
     vector<vector<Layer>> octavesVector;
 public:
     Pyramid();
-    ImageMatrix *getPyramidImage(ImageMatrix * imageMatrix);
+    ImageMatrix *getPyramidImage(ImageMatrix * imageMatrix, int octaveNumber);
 private:
     int accountOctaves(int width, int height);
     vector<vector<Layer>> changeImageSize(ImageMatrix * imageMatrix);

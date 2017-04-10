@@ -103,7 +103,7 @@ void MainWindow::on_pushButton_Gaus_clicked()
 void MainWindow::on_pushButton_Pyramid_clicked()
 {
     Pyramid * pyramid = new Pyramid();
-    ImageMatrix * pyrMatrix = pyramid->getPyramidImage(imageMatrix);
+    ImageMatrix * pyrMatrix = pyramid->getPyramidImage(imageMatrix, ui->spinBox_OctaveNumber->value());
     pyrMatrix->ratingMatrix();
     showImage(pyrMatrix->createImgFromMatrix());
 }
