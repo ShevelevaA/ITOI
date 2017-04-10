@@ -26,7 +26,7 @@ ImageMatrix::ImageMatrix(const double * matrix, int width, int height)
 {
     this->width = width;
     this->height = height;
-    this->edgeProcessing = 0;
+    this->edgeProcessing = 1;
     this->matrix = make_unique<double []>(this->width * this->height);
     for(int i = 0; i < this->width * this->height; i++){
         this->matrix[i] = matrix[i];
