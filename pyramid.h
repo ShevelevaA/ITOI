@@ -21,9 +21,9 @@ private:
 public:
     Pyramid();
     ImageMatrix *getPyramidImage(ImageMatrix * imageMatrix);
-    vector<vector<Layer>> changeImageSize(ImageMatrix * imageMatrix);
 private:
     int accountOctaves(int width, int height);
+    vector<vector<Layer>> changeImageSize(ImageMatrix * imageMatrix);
     double accountDeltaSigma(double sigmaPrevious, double sigmaFollowing);
 };
 

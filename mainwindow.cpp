@@ -104,6 +104,6 @@ void MainWindow::on_pushButton_Pyramid_clicked()
 {
     Pyramid * pyramid = new Pyramid();
     ImageMatrix * pyrMatrix = pyramid->getPyramidImage(imageMatrix);
-    //pyrMatrix->ratingMatrix();
+    pyrMatrix->ratingMatrix();
     showImage(pyrMatrix->createImgFromMatrix());
 }
