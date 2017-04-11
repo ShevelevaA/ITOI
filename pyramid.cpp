@@ -59,7 +59,7 @@ int Pyramid::accountOctaves(int width, int height){
     else
         minSide = height;
 
-    return minSide/150;
+    return log(minSide);
 }
 
 double Pyramid::accountDeltaSigma(double sigmaPrevious, double sigmaFollowing){
